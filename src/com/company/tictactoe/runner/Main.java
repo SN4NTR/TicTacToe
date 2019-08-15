@@ -5,6 +5,6 @@ import com.company.tictactoe.util.GameLauncher;
 public class Main {
 
     public static void main(String[] args) {
-        new GameLauncher().start();
+        new GameLauncher().menu();
     }
 }

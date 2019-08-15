@@ -7,7 +7,7 @@ public class GameLauncher {
     private GameField gameField = new GameField();
     private boolean running = true;
 
-    public void start() {
+    public void menu() {
         System.out.print(
                 "1. Singleplayer;\n" +
                 "2. Multiplayer;\n" +
@@ -32,9 +32,9 @@ public class GameLauncher {
         System.out.print("\nYour name: ");
         Player player = new Player(input.nextLine(), ElementType.CROSS);
         Player computer = new Player("Ultralord", ElementType.ZERO);
+        System.out.println();
 
-        gameField.displayField();
-
+        startGame(GameMode.SINGLEPLAYER, player, computer);
     }
 
     private void multiplayer() {
@@ -44,13 +44,32 @@ public class GameLauncher {
         Player player2 = new Player(input.nextLine(), ElementType.ZERO);
         System.out.println();
 
-        boolean playerSelector = false; // false - player1, true - player2
+        startGame(GameMode.MULTIPLAYER, player1, player2);
+    }
 
-        while (running) {
+    private void startGame(GameMode gameMode, Player ... players) {
+        boolean playerSelector = false;
+
+        while(running) {
             gameField.displayField();
-            System.out.print("\n\n" + (!playerSelector ? player1.getName() : player2.getName()) +
-                    ", enter cell number (1, 2, ..., 9): ");
-            cellNumberEntering(!playerSelector ? player1.getElementType() : player2.getElementType());
+
+            if (!playerSelector) {
+                System.out.print("\n\n" + players[0].getName() +
+                        ", enter cell number (1, 2, ..., 9): ");
+            } else if (gameMode == GameMode.MULTIPLAYER) {
+                System.out.print("\n\n" + players[1].getName() +
+                        ", enter cell number (1, 2, ..., 9): ");
+            } else {
+                System.out.println("\n");
+            }
+
+            if (!playerSelector) {
+                cellNumberEntering(players[0].getElementType());
+            } else if (gameMode == GameMode.MULTIPLAYER) {
+                cellNumberEntering(players[1].getElementType());
+            } else {
+                calculating(players[1].getElementType());
+            }
 
             running = !isWinner();
             playerSelector = !playerSelector;
@@ -62,9 +81,9 @@ public class GameLauncher {
 
         gameField.displayField();
         if (!running && playerSelector) {
-            System.out.println("\n\n" + player1.getName() + " is the winner!");
-        } else if (!running && !playerSelector) {
-            System.out.println("\n\n" + player2.getName() + " is the winner!");
+            System.out.println("\n\n" + players[0].getName() + " is the winner!");
+        } else if (!playerSelector) {
+            System.out.println("\n\n" + players[1].getName() + " is the winner!");
         } else if (running) {
             System.out.println("\n\nDraw!");
         }
@@ -91,7 +110,17 @@ public class GameLauncher {
         gameField.setField(cellNumber, elementType);
     }
 
-    public boolean isWinner() {
+    private void calculating(ElementType elementType) {
+        int cellNumber = (int)(1 + Math.random() * 10);
+
+        while (!gameField.isCellEmpty(cellNumber)) {
+            cellNumber = (int)(1 + Math.random() * 10);
+        }
+
+        gameField.setField(cellNumber, elementType);
+    }
+
+    private boolean isWinner() {
         int[][] field = gameField.getField();
         int rowCounter = 0;
         int columnCounter = 0;
