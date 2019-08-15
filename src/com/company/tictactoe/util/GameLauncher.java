@@ -8,10 +8,12 @@ public class GameLauncher {
     private boolean running = true;
 
     public void start() {
-        System.out.print("1. Singleplayer;\n" +
+        System.out.print(
+                "1. Singleplayer;\n" +
                 "2. Multiplayer;\n" +
                 "0. Quit the game.\n\n" +
-                "Your choice: ");
+                "Your choice: "
+        );
 
         int choice = -1;
         while (choice < 0 || choice > 2) {
@@ -27,109 +29,126 @@ public class GameLauncher {
     }
 
     private void singleplayer() {
-        Player player = new Player();
         System.out.print("\nYour name: ");
-        player.setName(input.nextLine());
+        Player player = new Player(input.nextLine(), ElementType.CROSS);
+        Player computer = new Player("Ultralord", ElementType.ZERO);
 
         gameField.displayField();
+
     }
 
     private void multiplayer() {
-        Player player1 = new Player();
-        Player player2 = new Player();
         System.out.print("\nFirst player name: ");
-        player1.setName(input.nextLine());
+        Player player1 = new Player(input.nextLine(), ElementType.CROSS);
         System.out.print("Second player name: ");
-        player2.setName(input.nextLine());
+        Player player2 = new Player(input.nextLine(), ElementType.ZERO);
         System.out.println();
 
-        int roundCounter = 1;
+        boolean playerSelector = false; // false - player1, true - player2
+
         while (running) {
             gameField.displayField();
-            int cellNumber = 0;
+            System.out.print("\n\n" + (!playerSelector ? player1.getName() : player2.getName()) +
+                    ", enter cell number (1, 2, ..., 9): ");
+            cellNumberEntering(!playerSelector ? player1.getElementType() : player2.getElementType());
 
-            while (cellNumber < 1 || cellNumber > 9) {
-                System.out.print("\n\n" + (roundCounter % 2 == 0 ? player2.getName() : player1.getName()) +
-                        ", enter cell number (1, 2, ..., 9): ");
-                cellNumber = input.nextInt();
-                input.nextLine();
-                System.out.println();
+            running = !isWinner();
+            playerSelector = !playerSelector;
 
-                if (cellNumber < 1 || cellNumber > 9) {
-                    System.out.print("Invalid cell value!");
-                } else if (!gameField.isCellEmpty(cellNumber)) {
-                    System.out.print("Cell isn't empty!");
-                    cellNumber = 0;
-                }
-            }
-
-            if (roundCounter % 2 == 0) {
-                gameField.setField(cellNumber, ElementType.ZERO);
-            } else {
-                gameField.setField(cellNumber, ElementType.CROSS);
-            }
-
-            running = !isGameOver(cellNumber);
-            roundCounter++;
-
-            if (roundCounter - 1 == GameField.ROWS * GameField.COLUMNS) {
+            if (gameField.isFieldFilled()) {
                 break;
             }
         }
 
         gameField.displayField();
-        if (!running && roundCounter % 2 == 0) {
+        if (!running && playerSelector) {
             System.out.println("\n\n" + player1.getName() + " is the winner!");
-        } else if (!running && roundCounter % 2 == 1) {
+        } else if (!running && !playerSelector) {
             System.out.println("\n\n" + player2.getName() + " is the winner!");
         } else if (running) {
             System.out.println("\n\nDraw!");
         }
+
+        running = true;
     }
 
-    public boolean isGameOver(int cellNumber) {
-        int[] indices = gameField.findElementIndices(cellNumber);
-        int row = indices[0];
-        int column = indices[1];
-        int[][] field = gameField.getField();
+    private void cellNumberEntering(ElementType elementType) {
+        int cellNumber = 0;
 
-        int tempRow = row - row % field.length;
-        if (field[tempRow][column] == field[tempRow + 1][column] &&
-                field[tempRow][column] == field[tempRow + 2][column]) {
-            return true;
-        }
+        while (cellNumber < 1 || cellNumber > 9) {
+            cellNumber = input.nextInt();
+            input.nextLine();
+            System.out.println();
 
-        int tempColumn = column - column % field.length;
-        if (field[row][tempColumn] == field[row][tempColumn + 1] &&
-                field[row][tempColumn] == field[row][tempColumn + 2]) {
-            return true;
-        }
-
-        if (cellNumber % 2 == 0) {
-            return false;
-        } else {
-            tempRow = tempColumn = 0;
-
-            if (cellNumber % 5 == 0) {
-                if (field[tempRow][tempColumn] == field[tempRow + 1][tempColumn + 1] &&
-                        field[tempRow][tempColumn] == field[tempRow + 2][tempColumn + 2]) {
-                    return true;
-                }
-                if (field[tempRow][tempColumn + 2] == field[tempRow + 1][tempColumn + 1] &&
-                        field[tempRow][tempColumn + 2] == field[tempRow + 2][tempColumn]) {
-                    return true;
-                }
-
-                return false;
-            } else {
-                if (cellNumber == 1 || cellNumber == 9) {
-                    return field[tempRow][tempColumn] == field[tempRow + 1][tempColumn + 1] &&
-                            field[tempRow][tempColumn] == field[tempRow + 2][tempColumn + 2];
-                }
-
-                return field[tempRow][tempColumn + 2] == field[tempRow + 1][tempColumn + 1] &&
-                        field[tempRow][tempColumn + 2] == field[tempRow + 2][tempColumn];
+            if (cellNumber < 1 || cellNumber > 9) {
+                System.out.print("Invalid cell value! Try again: ");
+            } else if (!gameField.isCellEmpty(cellNumber)) {
+                System.out.print("Cell isn't empty! Try again: ");
+                cellNumber = 0;
             }
         }
+
+        gameField.setField(cellNumber, elementType);
+    }
+
+    public boolean isWinner() {
+        int[][] field = gameField.getField();
+        int rowCounter = 0;
+        int columnCounter = 0;
+        int mainDiagonalCounter = 0;
+        int secondaryDiagonalCounter = 0;
+
+        for (int i = 0; i < field.length; i++) {
+            int tempRow = field[i][0];
+            int tempColumn = field[0][i];
+            int tempMainDiagonal = field[0][0];
+            int tempSecondaryDiagonal = field[0][GameField.COLUMNS - 1];
+            int k = field[i].length - 1;
+
+            for (int j = 0; j < field[i].length; j++) {
+                if (tempRow != ElementType.EMPTY.getValue() && field[i][j] == tempRow) {
+                    rowCounter++;
+                }
+                if (tempColumn != ElementType.EMPTY.getValue() && field[j][i] == tempColumn) {
+                    columnCounter++;
+                }
+                if (tempMainDiagonal != ElementType.EMPTY.getValue() && field[j][j] == tempMainDiagonal) {
+                    mainDiagonalCounter++;
+                }
+
+                if (tempSecondaryDiagonal != ElementType.EMPTY.getValue()) {
+                    if (field[j][k] == tempSecondaryDiagonal) {
+                        secondaryDiagonalCounter++;
+                        k--;
+                    }
+                }
+            }
+
+            if (rowCounter == GameField.ROWS) {
+                return true;
+            } else {
+                rowCounter = 0;
+            }
+
+            if (columnCounter == GameField.COLUMNS) {
+                return true;
+            } else {
+                columnCounter = 0;
+            }
+
+            if (mainDiagonalCounter == GameField.ROWS) {
+                return true;
+            } else {
+                mainDiagonalCounter = 0;
+            }
+
+            if (secondaryDiagonalCounter == GameField.ROWS) {
+                return true;
+            } else {
+                secondaryDiagonalCounter = 0;
+            }
+        }
+
+        return false;
     }
 }

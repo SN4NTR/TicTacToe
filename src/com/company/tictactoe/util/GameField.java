@@ -26,6 +26,18 @@ public class GameField {
         return field[row][column] == 0;
     }
 
+    public boolean isFieldFilled() {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (field[i][j] == ElementType.EMPTY.getValue()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public void displayField() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
@@ -59,6 +71,8 @@ public class GameField {
                 if (counter == cellNumber) {
                     result[0] = i;
                     result[1] = j;
+                    i = field.length;
+                    break;
                 }
             }
         }
