@@ -13,7 +13,7 @@ public class Game {
         this.gameField = gameField;
     }
 
-    public void startGame(GameMode gameMode, Player... players) {
+    public void startGame(Player... players) {
         boolean running = true;
         boolean playerSelector = false; // false - players[0], true - players[1]
 
@@ -21,11 +21,17 @@ public class Game {
             gameField.displayField();
 
             if (!playerSelector) {
-                System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
-            } else if (gameMode == GameMode.MULTIPLAYER) {
-                System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
+                if (!players[0].isComputer()) {
+                    System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
+                } else {
+                    System.out.println("\n");
+                }
             } else {
-                System.out.println("\n");
+                if (!players[1].isComputer()) {
+                    System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
+                } else {
+                    System.out.println("\n");
+                }
             }
 
             if (!playerSelector) {

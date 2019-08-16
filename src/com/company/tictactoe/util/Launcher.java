@@ -9,7 +9,7 @@ import com.company.tictactoe.util.logic.GameMode;
 import java.util.Scanner;
 
 public class Launcher {
-    private Scanner input = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private GameField gameField = new GameField();
     private Game game = new Game(gameField);
 
@@ -23,11 +23,13 @@ public class Launcher {
 
         int choice = -1;
         while (choice < 0 || choice > 2) {
-            choice = input.nextInt();
-            input.nextLine();
+            choice = scanner.nextInt();
+            scanner.nextLine();
 
             if (choice < 0 || choice > 2) {
                 System.out.print("Invalid value! Try again: ");
+            } else if (choice == 0) {
+                return;
             }
         }
 
@@ -43,21 +45,71 @@ public class Launcher {
 
     private void gameSettings(GameMode gameMode) {
         final int PLAYERS_NUMBER = 2;
+        final String BOT_NAME = "Ultralord";
         Player[] players = new Player[PLAYERS_NUMBER];
 
         if (gameMode == GameMode.SINGLEPLAYER) {
             System.out.print("\nYour name: ");
-            players[0] = new Player(input.nextLine(), ElementType.CROSS, false);
-            players[1] = new Player("Ultralord", ElementType.ZERO, true);
+            String name = scanner.nextLine();
+            ElementType elementType = chooseElementType();
+            players[0] = new Player(name, elementType, false);
+
+            if (elementType == ElementType.CROSS) {
+                elementType = ElementType.ZERO;
+            } else {
+                elementType = ElementType.CROSS;
+            }
+            players[1] = new Player(BOT_NAME, elementType, true);
+
             System.out.println();
         } else {
             System.out.print("\nFirst player name: ");
-            players[0] = new Player(input.nextLine(), ElementType.CROSS, false);
+            String name = scanner.nextLine();
+            ElementType elementType = chooseElementType();
+            players[0] = new Player(name, elementType, false);
+
             System.out.print("Second player name: ");
-            players[1] = new Player(input.nextLine(), ElementType.ZERO, false);
+            name = scanner.nextLine();
+            if (elementType == ElementType.CROSS) {
+                elementType = ElementType.ZERO;
+            } else {
+                elementType = ElementType.CROSS;
+            }
+            players[1] = new Player(name, elementType, false);
+
             System.out.println();
         }
 
-        game.startGame(gameMode, players[0], players[1]);
+        if (players[0].getElementType() == ElementType.CROSS) {
+            game.startGame(players[0], players[1]);
+        } else {
+            game.startGame(players[1], players[0]);
+        }
+    }
+
+    private ElementType chooseElementType() {
+        System.out.print("Choose your element type:\n" +
+                "1. X\n" +
+                "2. O\n" +
+                "Your choice: ");
+
+        int number = 0;
+        while (number < 1 || number > 2) {
+            number = scanner.nextInt();
+            scanner.nextLine();
+
+            if (number < 1 || number > 2) {
+                System.out.print("Invalid value! Try again: ");
+            }
+        }
+
+        ElementType elementType;
+        if (number == ElementType.CROSS.getValue()) {
+            elementType = ElementType.CROSS;
+        } else {
+            elementType = ElementType.ZERO;
+        }
+
+        return elementType;
     }
 }
