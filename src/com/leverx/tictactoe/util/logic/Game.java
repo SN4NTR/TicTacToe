@@ -1,74 +1,37 @@
-package com.company.tictactoe.util;
+package com.leverx.tictactoe.util.logic;
+
+import com.leverx.tictactoe.util.elements.GameField;
+import com.leverx.tictactoe.util.elements.Player;
 
 import java.util.Scanner;
 
-public class GameLauncher {
+public class Game {
     private Scanner input = new Scanner(System.in);
-    private GameField gameField = new GameField();
-    private boolean running = true;
+    private GameField gameField;
 
-    public void menu() {
-        System.out.print(
-                "1. Singleplayer;\n" +
-                "2. Multiplayer;\n" +
-                "0. Quit the game.\n\n" +
-                "Your choice: "
-        );
-
-        int choice = -1;
-        while (choice < 0 || choice > 2) {
-            choice = input.nextInt();
-            input.nextLine();
-        }
-
-        if (choice == GameMode.SINGLEPLAYER.getValue()) {
-            singleplayer();
-        } else if (choice == GameMode.MULTIPLAYER.getValue()) {
-            multiplayer();
-        }
+    public Game(GameField gameField) {
+        this.gameField = gameField;
     }
 
-    private void singleplayer() {
-        System.out.print("\nYour name: ");
-        Player player = new Player(input.nextLine(), ElementType.CROSS);
-        Player computer = new Player("Ultralord", ElementType.ZERO);
-        System.out.println();
-
-        startGame(GameMode.SINGLEPLAYER, player, computer);
-    }
-
-    private void multiplayer() {
-        System.out.print("\nFirst player name: ");
-        Player player1 = new Player(input.nextLine(), ElementType.CROSS);
-        System.out.print("Second player name: ");
-        Player player2 = new Player(input.nextLine(), ElementType.ZERO);
-        System.out.println();
-
-        startGame(GameMode.MULTIPLAYER, player1, player2);
-    }
-
-    private void startGame(GameMode gameMode, Player ... players) {
-        boolean playerSelector = false;
+    public void startGame(GameMode gameMode, Player... players) {
+        boolean running = true;
+        boolean playerSelector = false; // false - players[0], true - players[1]
 
         while(running) {
             gameField.displayField();
 
             if (!playerSelector) {
-                System.out.print("\n\n" + players[0].getName() +
-                        ", enter cell number (1, 2, ..., 9): ");
+                System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
             } else if (gameMode == GameMode.MULTIPLAYER) {
-                System.out.print("\n\n" + players[1].getName() +
-                        ", enter cell number (1, 2, ..., 9): ");
+                System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
             } else {
                 System.out.println("\n");
             }
 
             if (!playerSelector) {
-                cellNumberEntering(players[0].getElementType());
-            } else if (gameMode == GameMode.MULTIPLAYER) {
-                cellNumberEntering(players[1].getElementType());
+                cellNumberEntering(players[0]);
             } else {
-                calculating(players[1].getElementType());
+                cellNumberEntering(players[1]);
             }
 
             running = !isWinner();
@@ -84,40 +47,36 @@ public class GameLauncher {
             System.out.println("\n\n" + players[0].getName() + " is the winner!");
         } else if (!playerSelector) {
             System.out.println("\n\n" + players[1].getName() + " is the winner!");
-        } else if (running) {
+        } else {
             System.out.println("\n\nDraw!");
         }
-
-        running = true;
     }
 
-    private void cellNumberEntering(ElementType elementType) {
+    private void cellNumberEntering(Player player) {
         int cellNumber = 0;
 
-        while (cellNumber < 1 || cellNumber > 9) {
-            cellNumber = input.nextInt();
-            input.nextLine();
-            System.out.println();
+        if (player.isComputer()) {
+            cellNumber = (int)(1 + Math.random() * 10);
 
-            if (cellNumber < 1 || cellNumber > 9) {
-                System.out.print("Invalid cell value! Try again: ");
-            } else if (!gameField.isCellEmpty(cellNumber)) {
-                System.out.print("Cell isn't empty! Try again: ");
-                cellNumber = 0;
+            while (!gameField.isCellEmpty(cellNumber)) {
+                cellNumber = (int)(1 + Math.random() * 10);
+            }
+        } else {
+            while (cellNumber < 1 || cellNumber > 9) {
+                cellNumber = input.nextInt();
+                input.nextLine();
+                System.out.println();
+
+                if (cellNumber < 1 || cellNumber > 9) {
+                    System.out.print("Invalid cell value! Try again: ");
+                } else if (!gameField.isCellEmpty(cellNumber)) {
+                    System.out.print("Cell isn't empty! Try again: ");
+                    cellNumber = 0;
+                }
             }
         }
 
-        gameField.setField(cellNumber, elementType);
-    }
-
-    private void calculating(ElementType elementType) {
-        int cellNumber = (int)(1 + Math.random() * 10);
-
-        while (!gameField.isCellEmpty(cellNumber)) {
-            cellNumber = (int)(1 + Math.random() * 10);
-        }
-
-        gameField.setField(cellNumber, elementType);
+        gameField.setField(cellNumber, player.getElementType());
     }
 
     private boolean isWinner() {

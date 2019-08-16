@@ -1,6 +1,6 @@
-package com.company.tictactoe.util;
+package com.leverx.tictactoe.util.elements;
 
-import org.jetbrains.annotations.NotNull;
+import com.leverx.tictactoe.util.logic.ElementType;
 
 public class GameField {
     public static final int COLUMNS = 3;
@@ -11,7 +11,7 @@ public class GameField {
         return field;
     }
 
-    public void setField(int cellNumber, @NotNull ElementType type) {
+    public void setField(int cellNumber, ElementType type) {
         int[] indices = findElementIndices(cellNumber);
         int row = indices[0];
         int column = indices[1];
@@ -23,7 +23,7 @@ public class GameField {
         int row = indices[0];
         int column = indices[1];
 
-        return field[row][column] == 0;
+        return field[row][column] == ElementType.EMPTY.getValue();
     }
 
     public boolean isFieldFilled() {
@@ -60,7 +60,7 @@ public class GameField {
         }
     }
 
-    public int[] findElementIndices(int cellNumber) {
+    private int[] findElementIndices(int cellNumber) {
         int counter = 0;
         int[] result = new int[2];
 
