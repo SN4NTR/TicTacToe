@@ -1,4 +1,4 @@
-package com.leverx.tictactoe.util.logic;
+package com.company.tictactoe.util.logic;
 
 public enum GameMode {
     SINGLEPLAYER(1),

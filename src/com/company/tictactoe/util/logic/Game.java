@@ -1,7 +1,7 @@
-package com.leverx.tictactoe.util.logic;
+package com.company.tictactoe.util.logic;
 
-import com.leverx.tictactoe.util.elements.GameField;
-import com.leverx.tictactoe.util.elements.Player;
+import com.company.tictactoe.util.elements.GameField;
+import com.company.tictactoe.util.elements.Player;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class Game {
         boolean running = true;
         boolean playerSelector = false; // false - players[0], true - players[1]
 
-        while(running) {
+        while (running) {
             gameField.displayField();
 
             if (!playerSelector) {
@@ -29,9 +29,9 @@ public class Game {
             }
 
             if (!playerSelector) {
-                cellNumberEntering(players[0]);
+                enterCellNumber(players[0]);
             } else {
-                cellNumberEntering(players[1]);
+                enterCellNumber(players[1]);
             }
 
             running = !isWinner();
@@ -52,22 +52,24 @@ public class Game {
         }
     }
 
-    private void cellNumberEntering(Player player) {
+    private void enterCellNumber(Player player) {
+        final int cellNumbersAmount = GameField.ROWS * GameField.COLUMNS;
+        final int lowBorder = 1;
         int cellNumber = 0;
 
         if (player.isComputer()) {
-            cellNumber = (int)(1 + Math.random() * 10);
+            cellNumber = (int) (lowBorder + Math.random() * (cellNumbersAmount + 1));
 
             while (!gameField.isCellEmpty(cellNumber)) {
-                cellNumber = (int)(1 + Math.random() * 10);
+                cellNumber = (int) (lowBorder + Math.random() * (cellNumbersAmount + 1));
             }
         } else {
-            while (cellNumber < 1 || cellNumber > 9) {
+            while (cellNumber < lowBorder || cellNumber > cellNumbersAmount) {
                 cellNumber = input.nextInt();
                 input.nextLine();
                 System.out.println();
 
-                if (cellNumber < 1 || cellNumber > 9) {
+                if (cellNumber < lowBorder || cellNumber > cellNumbersAmount) {
                     System.out.print("Invalid cell value! Try again: ");
                 } else if (!gameField.isCellEmpty(cellNumber)) {
                     System.out.print("Cell isn't empty! Try again: ");
@@ -124,13 +126,13 @@ public class Game {
                 columnCounter = 0;
             }
 
-            if (mainDiagonalCounter == GameField.ROWS) {
+            if (mainDiagonalCounter == Math.sqrt(GameField.ROWS * GameField.COLUMNS)) {
                 return true;
             } else {
                 mainDiagonalCounter = 0;
             }
 
-            if (secondaryDiagonalCounter == GameField.ROWS) {
+            if (secondaryDiagonalCounter == Math.sqrt(GameField.ROWS * GameField.COLUMNS)) {
                 return true;
             } else {
                 secondaryDiagonalCounter = 0;

@@ -1,6 +1,6 @@
-package com.leverx.tictactoe.util.elements;
+package com.company.tictactoe.util.elements;
 
-import com.leverx.tictactoe.util.logic.ElementType;
+import com.company.tictactoe.util.logic.ElementType;
 
 public class GameField {
     public static final int COLUMNS = 3;
