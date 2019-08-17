@@ -26,7 +26,7 @@ public class GameField {
         return field[row][column] == ElementType.EMPTY.getValue();
     }
 
-    public boolean isFieldFull() {
+    public boolean isFull() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 if (field[i][j] == ElementType.EMPTY.getValue()) {

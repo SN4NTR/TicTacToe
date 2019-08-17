@@ -22,9 +22,15 @@ public class Launcher {
             game.start(players, new GameField());
 
             System.out.print("\nTry again? (y / n): ");
-            if (scanner.nextLine().toLowerCase().equals("n")) {
+            String answer = scanner.nextLine().toLowerCase();
+            while (!answer.equals("y") && !answer.equals("n")) {
+                System.out.print("Invalid value! Try again: ");
+                answer = scanner.nextLine().toLowerCase();
+            }
+            if (answer.equals("n")) {
                 isGameOver = true;
             }
+
             System.out.println();
         }
     }

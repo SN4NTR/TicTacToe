@@ -36,7 +36,7 @@ public class Game {
             running = !isWinner(gameField.getField());
             playerSelector = !playerSelector;
 
-            if (gameField.isFieldFull()) {
+            if (gameField.isFull()) {
                 break;
             }
         }
