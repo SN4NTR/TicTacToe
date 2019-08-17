@@ -1,7 +1,7 @@
 package com.company.tictactoe.util.logic;
 
 import com.company.tictactoe.util.elements.GameField;
-import com.company.tictactoe.util.elements.Player;
+import com.company.tictactoe.util.elements.players.Player;
 
 public class Game {
     private GameField gameField;
@@ -55,7 +55,7 @@ public class Game {
         }
     }
 
-    private boolean isWinner(int[][] field) {
+    public static boolean isWinner(int[][] field) {
         int rowCounter = 0;
         int columnCounter = 0;
         int mainDiagonalCounter = 0;

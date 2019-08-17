@@ -1,5 +1,6 @@
-package com.company.tictactoe.util.elements;
+package com.company.tictactoe.util.elements.players;
 
+import com.company.tictactoe.util.elements.GameField;
 import com.company.tictactoe.util.logic.ElementType;
 
 public abstract class Player {

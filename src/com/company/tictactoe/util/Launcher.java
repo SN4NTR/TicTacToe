@@ -1,9 +1,9 @@
 package com.company.tictactoe.util;
 
-import com.company.tictactoe.util.elements.Computer;
+import com.company.tictactoe.util.elements.players.Computer;
 import com.company.tictactoe.util.elements.GameField;
-import com.company.tictactoe.util.elements.Human;
-import com.company.tictactoe.util.elements.Player;
+import com.company.tictactoe.util.elements.players.Human;
+import com.company.tictactoe.util.elements.players.Player;
 import com.company.tictactoe.util.logic.ElementType;
 import com.company.tictactoe.util.logic.Game;
 import com.company.tictactoe.util.logic.GameMode;
