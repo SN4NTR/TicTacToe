@@ -1,6 +1,8 @@
 package com.company.tictactoe.util;
 
+import com.company.tictactoe.util.elements.Computer;
 import com.company.tictactoe.util.elements.GameField;
+import com.company.tictactoe.util.elements.Human;
 import com.company.tictactoe.util.elements.Player;
 import com.company.tictactoe.util.logic.ElementType;
 import com.company.tictactoe.util.logic.Game;
@@ -52,21 +54,21 @@ public class Launcher {
             System.out.print("\nYour name: ");
             String name = scanner.nextLine();
             ElementType elementType = chooseElementType();
-            players[0] = new Player(name, elementType, false);
+            players[0] = new Human(name, elementType, false);
 
             if (elementType == ElementType.CROSS) {
                 elementType = ElementType.ZERO;
             } else {
                 elementType = ElementType.CROSS;
             }
-            players[1] = new Player(BOT_NAME, elementType, true);
+            players[1] = new Computer(BOT_NAME, elementType, true);
 
             System.out.println();
         } else {
             System.out.print("\nFirst player name: ");
             String name = scanner.nextLine();
             ElementType elementType = chooseElementType();
-            players[0] = new Player(name, elementType, false);
+            players[0] = new Human(name, elementType, false);
 
             System.out.print("Second player name: ");
             name = scanner.nextLine();
@@ -75,7 +77,7 @@ public class Launcher {
             } else {
                 elementType = ElementType.CROSS;
             }
-            players[1] = new Player(name, elementType, false);
+            players[1] = new Human(name, elementType, false);
 
             System.out.println();
         }

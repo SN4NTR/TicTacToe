@@ -2,7 +2,7 @@ package com.company.tictactoe.util.elements;
 
 import com.company.tictactoe.util.logic.ElementType;
 
-public class Player {
+public abstract class Player {
     private String name;
     private ElementType elementType;
     private boolean isComputer;
@@ -24,4 +24,6 @@ public class Player {
     public boolean isComputer() {
         return isComputer;
     }
+
+    public abstract void enterCellNumber(GameField gameField);
 }

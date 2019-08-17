@@ -3,10 +3,7 @@ package com.company.tictactoe.util.logic;
 import com.company.tictactoe.util.elements.GameField;
 import com.company.tictactoe.util.elements.Player;
 
-import java.util.Scanner;
-
 public class Game {
-    private Scanner input = new Scanner(System.in);
     private GameField gameField;
 
     public Game(GameField gameField) {
@@ -35,12 +32,12 @@ public class Game {
             }
 
             if (!playerSelector) {
-                enterCellNumber(players[0]);
+                players[0].enterCellNumber(gameField);
             } else {
-                enterCellNumber(players[1]);
+                players[1].enterCellNumber(gameField);
             }
 
-            running = !isWinner();
+            running = !isWinner(gameField.getField());
             playerSelector = !playerSelector;
 
             if (gameField.isFieldFilled()) {
@@ -58,37 +55,7 @@ public class Game {
         }
     }
 
-    private void enterCellNumber(Player player) {
-        final int cellNumbersAmount = GameField.ROWS * GameField.COLUMNS;
-        final int lowBorder = 1;
-        int cellNumber = 0;
-
-        if (player.isComputer()) {
-            cellNumber = (int) (lowBorder + Math.random() * (cellNumbersAmount + 1));
-
-            while (!gameField.isCellEmpty(cellNumber)) {
-                cellNumber = (int) (lowBorder + Math.random() * (cellNumbersAmount + 1));
-            }
-        } else {
-            while (cellNumber < lowBorder || cellNumber > cellNumbersAmount) {
-                cellNumber = input.nextInt();
-                input.nextLine();
-                System.out.println();
-
-                if (cellNumber < lowBorder || cellNumber > cellNumbersAmount) {
-                    System.out.print("Invalid cell value! Try again: ");
-                } else if (!gameField.isCellEmpty(cellNumber)) {
-                    System.out.print("Cell isn't empty! Try again: ");
-                    cellNumber = 0;
-                }
-            }
-        }
-
-        gameField.setField(cellNumber, player.getElementType());
-    }
-
-    private boolean isWinner() {
-        int[][] field = gameField.getField();
+    private boolean isWinner(int[][] field) {
         int rowCounter = 0;
         int columnCounter = 0;
         int mainDiagonalCounter = 0;
