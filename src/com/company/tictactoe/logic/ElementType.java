@@ -1,4 +1,4 @@
-package com.company.tictactoe.util.logic;
+package com.company.tictactoe.logic;
 
 public enum ElementType {
     CROSS(1),

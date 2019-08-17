@@ -1,12 +1,12 @@
-package com.company.tictactoe.util.logic;
+package com.company.tictactoe.logic;
 
-public enum GameMode {
+public enum Mode {
     SINGLEPLAYER(1),
     MULTIPLAYER(2);
 
     private int value;
 
-    GameMode(int value) {
+    Mode(int value) {
         this.value = value;
     }
 

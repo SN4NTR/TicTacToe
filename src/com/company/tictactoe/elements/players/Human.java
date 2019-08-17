@@ -1,14 +1,14 @@
-package com.company.tictactoe.util.elements.players;
+package com.company.tictactoe.elements.players;
 
-import com.company.tictactoe.util.elements.GameField;
-import com.company.tictactoe.util.logic.ElementType;
+import com.company.tictactoe.elements.GameField;
+import com.company.tictactoe.logic.ElementType;
 
 import java.util.Scanner;
 
 public class Human extends Player {
 
-    public Human(String name, ElementType elementType, boolean isComputer) {
-        super(name, elementType, isComputer);
+    public Human(String name, ElementType elementType) {
+        super(name, elementType);
     }
 
     @Override

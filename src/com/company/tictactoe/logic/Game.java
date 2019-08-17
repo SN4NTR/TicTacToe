@@ -1,16 +1,12 @@
-package com.company.tictactoe.util.logic;
+package com.company.tictactoe.logic;
 
-import com.company.tictactoe.util.elements.GameField;
-import com.company.tictactoe.util.elements.players.Player;
+import com.company.tictactoe.elements.GameField;
+import com.company.tictactoe.elements.players.Computer;
+import com.company.tictactoe.elements.players.Player;
 
 public class Game {
-    private GameField gameField;
 
-    public Game(GameField gameField) {
-        this.gameField = gameField;
-    }
-
-    public void startGame(Player... players) {
+    public void start(Player[] players, GameField gameField) {
         boolean running = true;
         boolean playerSelector = false; // false - players[0], true - players[1]
 
@@ -18,13 +14,13 @@ public class Game {
             gameField.displayField();
 
             if (!playerSelector) {
-                if (!players[0].isComputer()) {
+                if (!(players[0] instanceof Computer)) {
                     System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
                 } else {
                     System.out.println("\n");
                 }
             } else {
-                if (!players[1].isComputer()) {
+                if (!(players[1] instanceof Computer)) {
                     System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
                 } else {
                     System.out.println("\n");
@@ -40,7 +36,7 @@ public class Game {
             running = !isWinner(gameField.getField());
             playerSelector = !playerSelector;
 
-            if (gameField.isFieldFilled()) {
+            if (gameField.isFieldFull()) {
                 break;
             }
         }
@@ -55,7 +51,7 @@ public class Game {
         }
     }
 
-    public static boolean isWinner(int[][] field) {
+    public boolean isWinner(int[][] field) {
         int rowCounter = 0;
         int columnCounter = 0;
         int mainDiagonalCounter = 0;
