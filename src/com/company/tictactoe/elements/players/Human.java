@@ -1,7 +1,7 @@
 package com.company.tictactoe.elements.players;
 
 import com.company.tictactoe.elements.GameField;
-import com.company.tictactoe.logic.ElementType;
+import com.company.tictactoe.constants.ElementType;
 
 import java.util.Scanner;
 

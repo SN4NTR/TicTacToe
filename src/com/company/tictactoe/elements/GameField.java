@@ -1,6 +1,6 @@
 package com.company.tictactoe.elements;
 
-import com.company.tictactoe.logic.ElementType;
+import com.company.tictactoe.constants.ElementType;
 
 public class GameField {
     public static final int COLUMNS = 3;
@@ -27,9 +27,9 @@ public class GameField {
     }
 
     public boolean isFull() {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
-                if (field[i][j] == ElementType.EMPTY.getValue()) {
+        for (int[] value : field) {
+            for (int i : value) {
+                if (i == ElementType.EMPTY.getValue()) {
                     return false;
                 }
             }

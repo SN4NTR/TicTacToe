@@ -1,19 +1,23 @@
 package com.company.tictactoe.logic;
 
-import com.company.tictactoe.elements.players.Computer;
+import com.company.tictactoe.constants.Difficulty;
+import com.company.tictactoe.constants.ElementType;
+import com.company.tictactoe.constants.Mode;
+import com.company.tictactoe.elements.players.Bot;
 import com.company.tictactoe.elements.players.Human;
 import com.company.tictactoe.elements.players.Player;
 
 import java.util.Scanner;
 
-public class Menu {
+public class Settings {
     private Scanner scanner = new Scanner(System.in);
 
     public Mode setMode() {
-        System.out.print("1. Singleplayer\n" +
-                        "2. Multiplayer\n" +
-                        "0. Quit the game\n\n" +
-                        "Your choice: "
+        System.out.print("Choose game mode:\n" +
+                "1. Singleplayer\n" +
+                "2. Multiplayer\n" +
+                "0. Quit\n" +
+                "Your choice: "
         );
 
         int choice = makeChoice(0, 2);
@@ -29,8 +33,8 @@ public class Menu {
     }
 
     public Player[] createPlayers(Mode mode) {
-        final int PLAYERS_NUMBER = 2;
         final String BOT_NAME = "Ultralord";
+        final int PLAYERS_NUMBER = 2;
         Player[] players = new Player[PLAYERS_NUMBER];
 
         if (mode == Mode.SINGLEPLAYER) {
@@ -39,9 +43,9 @@ public class Menu {
             ElementType elementType = setElementType();
             if (elementType == ElementType.CROSS) {
                 players[0] = new Human(name, elementType);
-                players[1] = new Computer(BOT_NAME, ElementType.ZERO, setDifficulty());
+                players[1] = new Bot(BOT_NAME, ElementType.ZERO, setDifficulty());
             } else {
-                players[0] = new Computer(BOT_NAME, ElementType.CROSS, setDifficulty());
+                players[0] = new Bot(BOT_NAME, ElementType.CROSS, setDifficulty());
                 players[1] = new Human(name, elementType);
             }
         } else {
@@ -68,9 +72,9 @@ public class Menu {
 
     private ElementType setElementType() {
         System.out.print("Choose your element type:\n" +
-                        "1. X\n" +
-                        "2. O\n" +
-                        "Your choice: "
+                "1. X\n" +
+                "2. O\n" +
+                "Your choice: "
         );
 
         int choice = makeChoice(1, 2);
@@ -83,9 +87,9 @@ public class Menu {
 
     private Difficulty setDifficulty() {
         System.out.print("\nChoose game difficulty:\n" +
-                        "1. Easy\n" +
-                        "2. Hard\n" +
-                        "Your choice: "
+                "1. Easy\n" +
+                "2. Hard\n" +
+                "Your choice: "
         );
 
         int choice = makeChoice(1, 2);

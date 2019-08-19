@@ -1,57 +1,47 @@
 package com.company.tictactoe.logic;
 
+import com.company.tictactoe.constants.ElementType;
 import com.company.tictactoe.elements.GameField;
-import com.company.tictactoe.elements.players.Computer;
 import com.company.tictactoe.elements.players.Player;
 
 public class Game {
 
     public void start(Player[] players, GameField gameField) {
-        boolean running = true;
+        boolean isWinner;
         boolean playerSelector = false; // false - players[0], true - players[1]
 
-        while (running) {
+        while (true) {
             gameField.displayField();
 
             if (!playerSelector) {
-                if (!(players[0] instanceof Computer)) {
-                    System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
-                } else {
-                    System.out.println("\n");
-                }
-            } else {
-                if (!(players[1] instanceof Computer)) {
-                    System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
-                } else {
-                    System.out.println("\n");
-                }
-            }
-
-            if (!playerSelector) {
+                System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
                 players[0].enterCellNumber(gameField);
             } else {
+                System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
                 players[1].enterCellNumber(gameField);
             }
 
-            running = !isWinner(gameField.getField());
-            playerSelector = !playerSelector;
-
-            if (gameField.isFull()) {
+            isWinner = checkWin(gameField.getField());
+            if (isWinner) {
+                break;
+            } else if (gameField.isFull()) {
                 break;
             }
+
+            playerSelector = !playerSelector;
         }
 
         gameField.displayField();
-        if (!running && playerSelector) {
+        if (!playerSelector && isWinner) {
             System.out.println("\n\n" + players[0].getName() + " is the winner!");
-        } else if (!playerSelector) {
+        } else if (playerSelector && isWinner) {
             System.out.println("\n\n" + players[1].getName() + " is the winner!");
         } else {
             System.out.println("\n\nDraw!");
         }
     }
 
-    public boolean isWinner(int[][] field) {
+    public boolean checkWin(int[][] field) {
         int rowCounter = 0;
         int columnCounter = 0;
         int mainDiagonalCounter = 0;

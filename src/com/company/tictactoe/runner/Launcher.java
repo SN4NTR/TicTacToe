@@ -3,8 +3,8 @@ package com.company.tictactoe.runner;
 import com.company.tictactoe.elements.GameField;
 import com.company.tictactoe.elements.players.Player;
 import com.company.tictactoe.logic.Game;
-import com.company.tictactoe.logic.Mode;
-import com.company.tictactoe.logic.Menu;
+import com.company.tictactoe.constants.Mode;
+import com.company.tictactoe.logic.Settings;
 
 import java.util.Scanner;
 
@@ -15,11 +15,12 @@ public class Launcher {
         boolean isGameOver = false;
 
         while (!isGameOver) {
-            Menu menu = new Menu();
-            Mode mode = menu.setMode();
-            Player[] players = menu.createPlayers(mode);
+            Settings settings = new Settings();
+            Mode mode = settings.setMode();
+            Player[] players = settings.createPlayers(mode);
             Game game = new Game();
-            game.start(players, new GameField());
+            GameField field = new GameField();
+            game.start(players, field);
 
             System.out.print("\nTry again? (y / n): ");
             String answer = scanner.nextLine().toLowerCase();
