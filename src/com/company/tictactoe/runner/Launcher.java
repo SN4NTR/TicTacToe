@@ -19,8 +19,7 @@ public class Launcher {
             Mode mode = settings.setMode();
             Player[] players = settings.createPlayers(mode);
             Game game = new Game();
-            GameField field = new GameField();
-            game.start(players, field);
+            game.start(players, new GameField());
 
             System.out.print("\nTry again? (y / n): ");
             String answer = scanner.nextLine().toLowerCase();

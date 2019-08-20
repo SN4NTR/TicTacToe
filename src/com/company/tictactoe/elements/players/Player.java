@@ -20,5 +20,5 @@ public abstract class Player {
         return elementType;
     }
 
-    public abstract void enterCellNumber(GameField gameField);
+    public abstract void makeStep(GameField gameField);
 }

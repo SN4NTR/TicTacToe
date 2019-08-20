@@ -12,7 +12,7 @@ public class Human extends Player {
     }
 
     @Override
-    public void enterCellNumber(GameField gameField) {
+    public void makeStep(GameField gameField) {
         Scanner scanner = new Scanner(System.in);
         final int cellNumbersAmount = GameField.ROWS * GameField.COLUMNS;
         final int lowBorder = 1;

@@ -14,7 +14,7 @@ public class Bot extends Player {
     }
 
     @Override
-    public void enterCellNumber(GameField gameField) {
+    public void makeStep(GameField gameField) {
         int cellNumber = 0;
 
         if (this.difficulty == Difficulty.EASY) {

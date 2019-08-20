@@ -15,10 +15,10 @@ public class Game {
 
             if (!playerSelector) {
                 System.out.print("\n\n" + players[0].getName() + ", enter cell number (1, 2, ..., 9): ");
-                players[0].enterCellNumber(gameField);
+                players[0].makeStep(gameField);
             } else {
                 System.out.print("\n\n" + players[1].getName() + ", enter cell number (1, 2, ..., 9): ");
-                players[1].enterCellNumber(gameField);
+                players[1].makeStep(gameField);
             }
 
             isWinner = checkWin(gameField.getField());
